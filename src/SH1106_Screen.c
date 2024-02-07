@@ -1,4 +1,4 @@
-#include "SH1106Screen.h"
+#include "SH1106_Screen.h"
 
 u8g2_t u8g2; // a structure which will contain all the data for one display
 XIicPs Iic;

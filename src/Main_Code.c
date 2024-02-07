@@ -4,8 +4,8 @@
 #include "xstatus.h"
 #include "sleep.h"
 
-#include "SH1106Screen.h"
 #include "Defines.h"
+#include "SH1106_Screen.h"
 
 int main() {
 	/*------------------------------------------
