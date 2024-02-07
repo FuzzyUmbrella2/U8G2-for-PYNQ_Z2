@@ -3,7 +3,6 @@
 u8g2_t u8g2; // a structure which will contain all the data for one display
 XIicPs Iic;
 XIicPs_Config *Config;
-int Status;
 u8g2_uint_t DispHeight, DispWidth, CentreHeight, CentreWidth;
 int8_t MaxStrHeight;
 
@@ -162,19 +161,22 @@ uint8_t u8x8_byte_PYNQ_Z2_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, voi
 	    		return XST_FAILURE;
 	    	}
 	    	// Initialize the IIC using the config
-	    	if (XIicPs_CfgInitialize(&Iic, Config, Config->BaseAddress) != XST_SUCCESS)
+	    	int status = XIicPs_CfgInitialize(&Iic, Config, Config->BaseAddress);
+	    	if (status != XST_SUCCESS)
 	    	{
 	    	   printf("XIicPs_CfgInitialize failure\r\n");
 	    	   return XST_FAILURE;
 	    	}
 	    	// Do a selftest on the IIC struct to ensure it is working
-	    	if (XIicPs_SelfTest(&Iic) != XST_SUCCESS)
+	    	status = XIicPs_SelfTest(&Iic);
+	    	if (status != XST_SUCCESS)
 	    	{
 	    		printf("IIC selftest FAILED \r\n");
 	    		return XST_FAILURE;
 	    	}
 	    	// Set the clock speed of the IIC bus
-	    	if (XIicPs_SetSClk(&Iic, IIC_SCLK_RATE) != XST_SUCCESS)
+	    	status = XIicPs_SetSClk(&Iic, IIC_SCLK_RATE);
+	    	if (status != XST_SUCCESS)
 	    	{
 	    		printf("IIC setClock FAILED \r\n");
 	    		return XST_FAILURE;
@@ -203,7 +205,7 @@ uint8_t u8x8_byte_PYNQ_Z2_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, voi
 	      // Sends the data over the IIC bus
 	    case U8X8_MSG_BYTE_END_TRANSFER:
 	    	// Send the data and check if it is received properly
-	    	Status = XIicPs_MasterSendPolled(&Iic, buffer, buf_idx, SH1106Address);
+	    	int Status = XIicPs_MasterSendPolled(&Iic, buffer, buf_idx, SH1106Address);
 	    	if (Status != XST_SUCCESS)
 	    	{
 	    		xil_printf("XIicPs_MasterSendPolled failure Status = %d\r\n",Status);

@@ -23,7 +23,7 @@ int main() {
 		for(int i =0; i<20; i++)
 		{
 			char buffer[20];
-			spritf(buffer, "i = %i\n",i);
+			sprintf(buffer, "i = %i\n",i);
 			printNewDisplay(1, 1, "something is printed on the screen");
 			printCentreXDisplay(20, buffer);
 			usleep(1000);
