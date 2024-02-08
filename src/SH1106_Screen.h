@@ -96,8 +96,13 @@ void drawCentreXFrameWithTxt(u8g2_uint_t y, const char *str);
  * Callback function that the U8G2 library uses
  * Takes care of the delays and initializing the gpio
  * Because HW IIC is used this function has no real meaning
+ * input:
+ * 		*u8x8		pointer to the structure with the data
+ * 		msg			the function that the callback function has to do
+ * 		arg_int		length in char of the data that needs to be send
+ * 		*arg_ptr	pointer to the data that needs to be send
  -----------------------------------------------------------*/
-uint8_t u8x8_gpio_and_delay_sh1106(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
+uint8_t cb_gpio_SH1106(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
 
 /*--------------------------------------------------------------
@@ -106,5 +111,12 @@ uint8_t u8x8_gpio_and_delay_sh1106(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, v
  * and the HW IIC library of the PYNQ-Z2
  * It initializes the IIC, formats the data so it is transferable
  * and gives the command to the IIC library to send the data
+ * input:
+ * 		*u8x8		pointer to the structure with the data
+ * 		msg			the function that the callback function has to do
+ * 		arg_int		length in char of the data that needs to be send
+ * 		*arg_ptr	pointer to the data that needs to be send
+ * return:
+ * 		succes or failure of the function
  */
-uint8_t u8x8_byte_PYNQ_Z2_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
+uint8_t cb_HW_I2C_send(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);

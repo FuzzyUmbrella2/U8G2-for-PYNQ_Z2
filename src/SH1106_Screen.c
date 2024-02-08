@@ -2,7 +2,6 @@
 
 u8g2_t u8g2; // a structure which will contain all the data for one display
 XIicPs Iic;
-XIicPs_Config *Config;
 u8g2_uint_t DispHeight, DispWidth, CentreHeight, CentreWidth;
 int8_t MaxStrHeight;
 
@@ -10,7 +9,7 @@ void initDisplay()
 {
 	// Setup function for the specific screen
 	// Gets all the required data and links the CB function
-    u8g2_Setup_sh1106_i2c_128x64_noname_f(&u8g2, U8G2_R0, u8x8_byte_PYNQ_Z2_hw_i2c, u8x8_gpio_and_delay_sh1106);
+    u8g2_Setup_sh1106_i2c_128x64_noname_f(&u8g2, U8G2_R0, cb_HW_I2C_send, cb_gpio_SH1106);
     u8g2_InitDisplay(&u8g2);		// Send init sequence to the display, display is in sleep mode after this,
     u8g2_SetPowerSave(&u8g2, 0);	// Wake up display
 
@@ -74,7 +73,7 @@ void drawCentreXFrameWithTxt(u8g2_uint_t y, const char *str)
 	u8g2_SendBuffer(&u8g2);	// Send buffer to the screen
 }
 
-uint8_t u8x8_gpio_and_delay_sh1106(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
+uint8_t cb_gpio_SH1106(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
 {
   switch(msg)
   {
@@ -143,16 +142,18 @@ uint8_t u8x8_gpio_and_delay_sh1106(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, v
   return 1;
 }
 
-uint8_t u8x8_byte_PYNQ_Z2_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
+uint8_t cb_HW_I2C_send(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
 {
-	  static uint8_t buffer[32];		/* u8g2/u8x8 will never send more than 32 bytes between START_TRANSFER and END_TRANSFER */
-	  static uint8_t buf_idx;
-	  uint8_t *data;
+	  /* u8g2/u8x8 will never send more than 32 bytes between START_TRANSFER and END_TRANSFER */
+	  static uint8_t buffer[32];	// buffer that will be send
+	  static uint8_t buf_idx;		// index of the buffer above
+	  uint8_t *data;				// pointer to the data that needs to be send
 
 	  switch(msg)
 	  {
 	  	  // Only called once to set up the IIC hardware in the right way
 	    case U8X8_MSG_BYTE_INIT:
+	    	XIicPs_Config *Config;
 	    	// Look up the config of the IIC
 	    	Config = XIicPs_LookupConfig(XPAR_XIICPS_0_DEVICE_ID);
 	    	if (NULL == Config)
@@ -186,8 +187,8 @@ uint8_t u8x8_byte_PYNQ_Z2_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, voi
 
 	      // Collects all the data in a buffer
 	    case U8X8_MSG_BYTE_SEND:
-	      data = (uint8_t *)arg_ptr;
-	      while( arg_int > 0 )
+	      data = (uint8_t *)arg_ptr;	// load data
+	      while( arg_int > 0 )			// continue while there is data
 	      {
 		buffer[buf_idx++] = *data;
 		data++;
@@ -205,7 +206,7 @@ uint8_t u8x8_byte_PYNQ_Z2_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, voi
 	      // Sends the data over the IIC bus
 	    case U8X8_MSG_BYTE_END_TRANSFER:
 	    	// Send the data and check if it is received properly
-	    	int Status = XIicPs_MasterSendPolled(&Iic, buffer, buf_idx, SH1106Address);
+	    	int Status = XIicPs_MasterSendPolled(&Iic, buffer, buf_idx, SlaveAddress);
 	    	if (Status != XST_SUCCESS)
 	    	{
 	    		xil_printf("XIicPs_MasterSendPolled failure Status = %d\r\n",Status);
