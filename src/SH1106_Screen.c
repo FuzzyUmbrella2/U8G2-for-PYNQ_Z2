@@ -35,7 +35,7 @@ void printDisplay(u8g2_uint_t x, u8g2_uint_t y, const char *str)
 	u8g2_SendBuffer(&u8g2);				// Send buffer to the screen
 }
 
-void printNewDisplay(u8g2_uint_t x, u8g2_uint_t y, const char *str)
+void printNew(u8g2_uint_t x, u8g2_uint_t y, const char *str)
 {
 	y = y+MaxStrHeight;		// starting point form bottom to top left
 	u8g2_ClearBuffer(&u8g2);	// clear the buffer
@@ -44,7 +44,7 @@ void printNewDisplay(u8g2_uint_t x, u8g2_uint_t y, const char *str)
 	u8g2_SendBuffer(&u8g2);		// Send buffer to screen
 }
 
-void printCentreXDisplay(u8g2_uint_t y, const char *str)
+void printCentreX(u8g2_uint_t y, const char *str)
 {
 	u8g2_uint_t x = CentreWidth-(u8g2_GetStrWidth(&u8g2, str)/2);	// Starting point on horizontal middle line
 	y = y+MaxStrHeight;		// starting point form bottom to top left
@@ -52,7 +52,7 @@ void printCentreXDisplay(u8g2_uint_t y, const char *str)
 	u8g2_SendBuffer(&u8g2);	// Send buffer to screen
 }
 
-void printNew_Centre_XY_Display(const char *str)
+void printNewMiddle(const char *str)
 {
 	u8g2_ClearBuffer(&u8g2);	// Clear the buffer
 	u8g2_uint_t x = CentreWidth-(u8g2_GetStrWidth(&u8g2, str)/2);	// Starting point on horizontal middle line
@@ -61,7 +61,7 @@ void printNew_Centre_XY_Display(const char *str)
 	u8g2_SendBuffer(&u8g2);	// Send the buffer to the display
 }
 
-void drawCentreXFrameWithTxt(u8g2_uint_t y, const char *str)
+void txtWthFrameCentreX(u8g2_uint_t y, const char *str)
 {
 	u8g2_uint_t w = u8g2_GetStrWidth(&u8g2, str)+ 4;		// Get the needed width of the frame
 	u8g2_uint_t h = ((u8g2_uint_t) MaxStrHeight)+ 3;		// Get the needed heigth of the frame

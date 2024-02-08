@@ -45,7 +45,7 @@ void printDisplay(u8g2_uint_t x, u8g2_uint_t y, const char *str);
  *
  * No returns;
  ----------------------------------------------------------*/
-void printNewDisplay(u8g2_uint_t x, u8g2_uint_t y, const char *str);
+void printNew(u8g2_uint_t x, u8g2_uint_t y, const char *str);
 
 
 /*-----------------------------------------------------------
@@ -60,7 +60,7 @@ void printNewDisplay(u8g2_uint_t x, u8g2_uint_t y, const char *str);
  *
  * No returns;
 ----------------------------------------------------------- */
-void printCentreXDisplay(u8g2_uint_t y, const char *str);
+void printCentreX(u8g2_uint_t y, const char *str);
 
 
 /*-----------------------------------------------------------
@@ -74,7 +74,7 @@ void printCentreXDisplay(u8g2_uint_t y, const char *str);
  *
  * No returns;
  -----------------------------------------------------------*/
-void printNew_Centre_XY_Display(const char *str);
+void printNewMiddle(const char *str);
 
 
 /*-------------------------------------------------------------
@@ -89,7 +89,7 @@ void printNew_Centre_XY_Display(const char *str);
  *
  * No returns;
  ------------------------------------------------------------*/
-void drawCentreXFrameWithTxt(u8g2_uint_t y, const char *str);
+void txtWthFrameCentreX(u8g2_uint_t y, const char *str);
 
 
 /*-----------------------------------------------------------
