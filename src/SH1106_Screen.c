@@ -148,12 +148,14 @@ uint8_t cb_HW_I2C_send(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr
 	  static uint8_t buffer[32];	// buffer that will be send
 	  static uint8_t buf_idx;		// index of the buffer above
 	  uint8_t *data;				// pointer to the data that needs to be send
+	  XIicPs_Config *Config;		// config of the I2C
+	  int status;
 
 	  switch(msg)
 	  {
 	  	  // Only called once to set up the IIC hardware in the right way
 	    case U8X8_MSG_BYTE_INIT:
-	    	XIicPs_Config *Config;
+
 	    	// Look up the config of the IIC
 	    	Config = XIicPs_LookupConfig(XPAR_XIICPS_0_DEVICE_ID);
 	    	if (NULL == Config)
@@ -162,7 +164,7 @@ uint8_t cb_HW_I2C_send(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr
 	    		return XST_FAILURE;
 	    	}
 	    	// Initialize the IIC using the config
-	    	int status = XIicPs_CfgInitialize(&Iic, Config, Config->BaseAddress);
+	    	status = XIicPs_CfgInitialize(&Iic, Config, Config->BaseAddress);
 	    	if (status != XST_SUCCESS)
 	    	{
 	    	   printf("XIicPs_CfgInitialize failure\r\n");
@@ -206,10 +208,10 @@ uint8_t cb_HW_I2C_send(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr
 	      // Sends the data over the IIC bus
 	    case U8X8_MSG_BYTE_END_TRANSFER:
 	    	// Send the data and check if it is received properly
-	    	int Status = XIicPs_MasterSendPolled(&Iic, buffer, buf_idx, SlaveAddress);
-	    	if (Status != XST_SUCCESS)
+	    	status = XIicPs_MasterSendPolled(&Iic, buffer, buf_idx, SlaveAddress);
+	    	if (status != XST_SUCCESS)
 	    	{
-	    		xil_printf("XIicPs_MasterSendPolled failure Status = %d\r\n",Status);
+	    		xil_printf("XIicPs_MasterSendPolled failure Status = %d\r\n",status);
 	    	}
 	      break;
 	    default:
