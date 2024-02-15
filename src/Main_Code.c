@@ -24,7 +24,7 @@ int main() {
 		{
 			char buffer[20];
 			sprintf(buffer, "i = %i\n",i);
-			printNew(1, 1, "something is printed on the screen");
+			printNew(1, 1, "something is printed");
 			printCentreX(20, buffer);
 			usleep(1000);
 		}

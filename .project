@@ -3,7 +3,7 @@
 	<name>U8G2-for-PYNQ_Z2</name>
 	<comment>Created by Vitis v2022.2</comment>
 	<projects>
-		<project>IIC_platform_V2</project>
+		<project>IIC_platform_examples</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
