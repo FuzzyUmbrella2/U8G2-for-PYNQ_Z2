@@ -22,13 +22,9 @@ int main() {
 	{
 		for(int i =0; i<20; i++)
 		{
-			if (i == 0)
-			{
-				printNew(0,0,"");
-			}
 			char buffer[20];
 			sprintf(buffer, "i = %i\n",i);
-			printDisplay(1, 1, "something is printed");
+			printNew(1, 1, "something is printed");
 			printCentreX(20, buffer);
 			usleep(1000);
 		}
